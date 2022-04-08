@@ -1,6 +1,7 @@
 extends Node2D
 export var rotSpeed := 30
 var winSize = OS.get_window_size()
+onready var Invert = get_parent().get_parent()
 
 func _process(delta: float) -> void:
 	rotation_degrees -= (0.01 * rotSpeed)
@@ -12,7 +13,6 @@ func _process(delta: float) -> void:
 	scale.x = (1 / zoomFactor*2)
 	position.x = (512 / zoomFactor)
 	position.y = (600 / zoomFactor)
-	
 	
 	# Essentially just to cap the variable, didn't want it getting to like a million if u took too long
 	rotation_degrees = fmod(rotation_degrees, 360)

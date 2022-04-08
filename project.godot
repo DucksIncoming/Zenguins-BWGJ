@@ -21,7 +21,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Invert="*res://src/Scripts/Invert.gd"
+Invert="res://src/Scripts/Invert.gd"
 
 [display]
 
@@ -30,6 +30,8 @@ window/per_pixel_transparency/allowed=true
 [global]
 
 background=false
+singleton=false
+filter=false
 
 [input]
 
