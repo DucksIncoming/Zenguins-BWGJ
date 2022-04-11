@@ -1,19 +1,26 @@
 extends Node2D
-export var rotSpeed := 30
-var winSize = OS.get_window_size()
+export var daySpeed := 30
+export var nightSpeed := 30
+export var startRot := -90
 onready var Invert = get_parent().get_parent()
+var timeOfDay = "day"
+var currentSpeed = daySpeed
+
+func start() -> void:
+	timeOfDay = "day"
+	rotation_degrees = startRot
+	get_node("Sun").rotation_degrees = 0
+	get_node("Moon").rotation_degrees = 0
 
 func _process(delta: float) -> void:
-	rotation_degrees -= (0.01 * rotSpeed)
-	var zoomFactor = (get_parent().get_parent().get_node("Player").get_node("Camera2D").zoom.x) / 0.5
+	timeOfDay = get_parent().get_parent().timeOfDay
 	
-	# Rescales the sun/moon to fit the screen
-	# an unimaginably stupid way to do this but it took me forever bc im stupid so im not changing it
-	scale.y = (1 / zoomFactor*2)
-	scale.x = (1 / zoomFactor*2)
-	position.x = (512 / zoomFactor)
-	position.y = (600 / zoomFactor)
-	
+	if (timeOfDay == "day"):
+		rotation_degrees -= (0.01 * daySpeed)
+		currentSpeed = daySpeed
+	else:
+		rotation_degrees -= (0.01 * nightSpeed)
+		currentSpeed = nightSpeed
 	# Essentially just to cap the variable, didn't want it getting to like a million if u took too long
 	rotation_degrees = fmod(rotation_degrees, 360)
 	

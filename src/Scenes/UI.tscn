@@ -1,0 +1,118 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/UI/menu.png" type="Texture" id=1]
+[ext_resource path="res://Assets/UI/restart.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/VCR_OSD_MONO_1.001.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://src/Scenes/Restart.gd" type="Script" id=4]
+[ext_resource path="res://src/Scenes/Menu.gd" type="Script" id=5]
+[ext_resource path="res://Assets/UI/LevelComplete.png" type="Texture" id=6]
+[ext_resource path="res://src/Scenes/WinLabel.gd" type="Script" id=7]
+[ext_resource path="res://Assets/Background/black.png" type="Texture" id=8]
+
+[sub_resource type="DynamicFont" id=93]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -0.89093
+margin_top = 2.67273
+margin_right = -0.89093
+margin_bottom = 2.67273
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Button" parent="."]
+margin_top = 16.0362
+margin_right = 28.0
+margin_bottom = 38.0362
+rect_scale = Vector2( 3, 3 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+icon = ExtResource( 1 )
+flat = true
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Restart" type="Button" parent="."]
+margin_top = 70.3743
+margin_right = 28.0
+margin_bottom = 92.3745
+rect_scale = Vector2( 3, 3 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+icon = ExtResource( 2 )
+flat = true
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -211.984
+margin_top = 16.0362
+margin_right = 143.016
+margin_bottom = 198.036
+rect_pivot_offset = Vector2( 142.43, 43.168 )
+custom_fonts/normal_font = SubResource( 93 )
+text = "Level: 1/?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WinLabel" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 688.0
+margin_top = -32.0
+margin_right = 816.0
+margin_bottom = 32.0
+rect_scale = Vector2( 4, 4 )
+rect_pivot_offset = Vector2( 64, 32 )
+texture = ExtResource( 6 )
+stretch_mode = 3
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="WinLabel"]
+playback_speed = 5.0
+playback/speed = 5.0
+
+[node name="Delay" type="Timer" parent="WinLabel"]
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -50
+
+[node name="Black" type="TextureRect" parent="CanvasLayer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -438.519
+margin_top = -185.222
+margin_right = 1481.48
+margin_bottom = 894.778
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fade" type="Tween" parent="CanvasLayer/Black"]
+playback_speed = 10.0
+playback/speed = 10.0
+[connection signal="mouse_entered" from="Menu" to="Menu" method="_on_Menu_mouse_entered"]
+[connection signal="mouse_exited" from="Menu" to="Menu" method="_on_Menu_mouse_exited"]
+[connection signal="mouse_entered" from="Restart" to="Restart" method="_on_Restart_mouse_entered"]
+[connection signal="mouse_exited" from="Restart" to="Restart" method="_on_Restart_mouse_exited"]
+[connection signal="timeout" from="WinLabel/Delay" to="WinLabel" method="_on_Delay_timeout"]
+[connection signal="tween_completed" from="CanvasLayer/Black/Fade" to="WinLabel" method="_on_Fade_tween_completed"]

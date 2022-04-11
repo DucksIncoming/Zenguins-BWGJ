@@ -1,0 +1,15 @@
+extends Button
+var isHover = false
+
+func _process(delta: float) -> void:
+	if (isHover):
+		modulate.a = 0.7
+	else:
+		modulate.a = 0.3
+
+func _on_Restart_mouse_entered() -> void:
+	isHover = true
+
+
+func _on_Restart_mouse_exited() -> void:
+	isHover = false
