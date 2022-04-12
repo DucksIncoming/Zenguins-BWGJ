@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/UI/menu.png" type="Texture" id=1]
 [ext_resource path="res://Assets/UI/restart.png" type="Texture" id=2]
@@ -8,23 +8,39 @@
 [ext_resource path="res://Assets/UI/LevelComplete.png" type="Texture" id=6]
 [ext_resource path="res://src/Scenes/WinLabel.gd" type="Script" id=7]
 [ext_resource path="res://Assets/Background/black.png" type="Texture" id=8]
+[ext_resource path="res://src/Levels/UI.gd" type="Script" id=9]
+[ext_resource path="res://Assets/UI/Pause/pause_bg.png" type="Texture" id=10]
+[ext_resource path="res://Assets/UI/Pause/resume.png" type="Texture" id=11]
+[ext_resource path="res://Assets/UI/Pause/menu_exit.png" type="Texture" id=12]
+[ext_resource path="res://Assets/UI/Pause/credits.png" type="Texture" id=13]
+[ext_resource path="res://Assets/UI/Pause/creditspanel.png" type="Texture" id=14]
 
-[sub_resource type="DynamicFont" id=93]
-size = 32
+[sub_resource type="ShaderMaterial" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 128
 font_data = ExtResource( 3 )
 
-[node name="UI" type="Control"]
+[node name="UI" type="ParallaxBackground"]
+pause_mode = 2
+layer = 100
+
+[node name="UI" type="Control" parent="."]
+pause_mode = 2
+material = SubResource( 1 )
+use_parent_material = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -0.89093
-margin_top = 2.67273
-margin_right = -0.89093
-margin_bottom = 2.67273
+margin_left = 2.85492
+margin_top = -2.82046
+margin_right = 2.85486
+margin_bottom = -2.82043
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Menu" type="Button" parent="."]
+[node name="Menu" type="Button" parent="UI"]
 margin_top = 16.0362
 margin_right = 28.0
 margin_bottom = 38.0362
@@ -39,7 +55,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Restart" type="Button" parent="."]
+[node name="Restart" type="Button" parent="UI"]
 margin_top = 70.3743
 margin_right = 28.0
 margin_bottom = 92.3745
@@ -54,21 +70,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -211.984
-margin_top = 16.0362
-margin_right = 143.016
-margin_bottom = 198.036
+margin_left = -299.0
+margin_top = -10.0
+margin_right = 494.0
+margin_bottom = 172.0
+rect_scale = Vector2( 0.2, 0.25 )
 rect_pivot_offset = Vector2( 142.43, 43.168 )
-custom_fonts/normal_font = SubResource( 93 )
-text = "Level: 1/?"
+custom_fonts/normal_font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WinLabel" type="TextureRect" parent="."]
+[node name="WinLabel" type="TextureRect" parent="UI"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -86,18 +102,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="WinLabel"]
+[node name="Tween" type="Tween" parent="UI/WinLabel"]
 playback_speed = 5.0
 playback/speed = 5.0
 
-[node name="Delay" type="Timer" parent="WinLabel"]
+[node name="Delay" type="Timer" parent="UI/WinLabel"]
 one_shot = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 layer = -50
 
-[node name="Black" type="TextureRect" parent="CanvasLayer"]
+[node name="Black" type="TextureRect" parent="UI/CanvasLayer"]
 modulate = Color( 1, 1, 1, 0 )
+anchor_top = -0.000991007
+anchor_right = 9.53674e-07
+anchor_bottom = -0.000991007
 margin_left = -438.519
 margin_top = -185.222
 margin_right = 1481.48
@@ -107,12 +126,85 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Fade" type="Tween" parent="CanvasLayer/Black"]
+[node name="Fade" type="Tween" parent="UI/CanvasLayer/Black"]
 playback_speed = 10.0
 playback/speed = 10.0
-[connection signal="mouse_entered" from="Menu" to="Menu" method="_on_Menu_mouse_entered"]
-[connection signal="mouse_exited" from="Menu" to="Menu" method="_on_Menu_mouse_exited"]
-[connection signal="mouse_entered" from="Restart" to="Restart" method="_on_Restart_mouse_entered"]
-[connection signal="mouse_exited" from="Restart" to="Restart" method="_on_Restart_mouse_exited"]
-[connection signal="timeout" from="WinLabel/Delay" to="WinLabel" method="_on_Delay_timeout"]
-[connection signal="tween_completed" from="CanvasLayer/Black/Fade" to="WinLabel" method="_on_Fade_tween_completed"]
+
+[node name="Pause" type="TextureRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -237.145
+margin_top = -212.82
+margin_right = 242.855
+margin_bottom = 207.18
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Resume" type="TextureButton" parent="Pause"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -114.168
+margin_top = -86.2447
+margin_right = 119.832
+margin_bottom = -23.2447
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuExit" type="TextureButton" parent="Pause"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -114.168
+margin_top = 3.42337
+margin_right = 119.832
+margin_bottom = 66.4234
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource( 12 )
+
+[node name="Credits" type="TextureButton" parent="Pause"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -114.168
+margin_top = 94.0352
+margin_right = 119.832
+margin_bottom = 157.035
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditsPanel" type="TextureRect" parent="Pause"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = 960.0
+margin_bottom = 540.0
+texture = ExtResource( 14 )
+[connection signal="mouse_entered" from="UI/Menu" to="UI/Menu" method="_on_Menu_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Menu" to="UI/Menu" method="_on_Menu_mouse_exited"]
+[connection signal="pressed" from="UI/Menu" to="UI" method="_on_Menu_pressed"]
+[connection signal="mouse_entered" from="UI/Restart" to="UI/Restart" method="_on_Restart_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Restart" to="UI/Restart" method="_on_Restart_mouse_exited"]
+[connection signal="timeout" from="UI/WinLabel/Delay" to="UI/WinLabel" method="_on_Delay_timeout"]
+[connection signal="tween_completed" from="UI/CanvasLayer/Black/Fade" to="UI/WinLabel" method="_on_Fade_tween_completed"]
+[connection signal="pressed" from="Pause/Resume" to="UI" method="_on_Resume_pressed"]
+[connection signal="pressed" from="Pause/MenuExit" to="UI" method="_on_MenuExit_pressed"]
+[connection signal="pressed" from="Pause/Credits" to="UI" method="_on_Credits_pressed"]

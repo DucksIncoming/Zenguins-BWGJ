@@ -25,13 +25,16 @@ var curLevel = 0
 var horizDir = 1
 var test = 0
 var delay = 0
+var bouncePower = 999
+var onBouncePad = false
 
 func start() -> void:
 	position = Spawnpoint.position
-	iTimer.set_wait_time(5)
+	iTimer.set_wait_time(0.5)
 
 func playerDeath() -> void:
 	if (not inGoal and (not inIframe)):
+		get_node("Audio/DieAudio").play()
 		var deathPoint = position
 		var ZenguinInstance = ZenguinResource.instance()
 		get_parent().add_child(ZenguinInstance)
@@ -56,6 +59,7 @@ func _process(delta: float) -> void:
 		var goal = get_parent().get_node("Goal")
 		if (goal.goalAccessible == true):
 			position = Vector2(goal.position.x, goal.position.y - 40)
+			get_node("Audio/WinJumpAudio").play()
 			animState.travel("Goal")
 			inGoal = true
 			curLevel += 1
@@ -81,7 +85,7 @@ func _process(delta: float) -> void:
 		#if (collision.collider is TileMap):
 		#	var tileId = collision.collider.get_cellv(collision.collider.world_to_map(position) - collision.normal)
 	
-	_velocity.x = _horizontal_direction * speed + ((get_floor_velocity().x)/10)
+	_velocity.x = _horizontal_direction * speed # + (get_floor_velocity().x)
 	_velocity.y += gravity * delta * int(not is_on_floor())
 	
 	var is_falling = _velocity.y > 0 and not is_on_floor()
@@ -99,6 +103,8 @@ func _process(delta: float) -> void:
 				var tileMap = collision.collider
 				if (tileMap.name == "JumpPad"):
 					_velocity.y = -1 * tileMap.padPower
+					bouncePower = tileMap.padPower
+					get_node("Audio/BouncepadAudio").play()
 				elif (tileMap.name == "KillTiles"):
 					playerDeath()
 				elif (tileMap.name == "Rope"):
@@ -113,13 +119,20 @@ func _process(delta: float) -> void:
 			elif (collision.collider.has_method("isConveyor")):
 				_velocity.x += collision.collider.convSpeed
 	
+	if (_velocity.y == -1 * bouncePower):
+		onBouncePad = true
+	else:
+		onBouncePad = false
+	
 	# Giant, poorly optimized coyote time shit
 	if (jump_attempted and not is_jumping and floor_memory > 0):
 		_velocity.y = -jumpPower
+		get_node("Audio/JumpAudio").play()
 		floor_memory = 0
 	elif (jump_attempted and not is_jumping):
 		if (is_on_floor()):
 			_velocity.y = -jumpPower
+			get_node("Audio/JumpAudio").play()
 			jump_attempted = false
 			floor_memory = 0
 			deltaSinceJump = 0
@@ -127,7 +140,7 @@ func _process(delta: float) -> void:
 			deltaSinceJump += 1
 			floor_memory = max(0, (floor_memory - 1))
 		else:
-			jump_attempted = false
+			jump_attempted = false	
 			floor_memory = 0
 			deltaSinceJump = 0
 	else:
@@ -137,12 +150,15 @@ func _process(delta: float) -> void:
 	
 	if (is_jumping):
 		_velocity.y = -jumpPower
+		get_node("Audio/JumpAudio").play()
 	
 	if (not inGoal):
-		_velocity = move_and_slide(_velocity, UP_DIRECTION, false)
+		var snap = Vector2.DOWN * 32 if !(is_jumping or jump_attempted or onBouncePad) else Vector2.ZERO
+		_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
 
 func win() -> void:
-	get_parent().get_node("UI").get_node("UI").get_node("WinLabel").win()
+	get_parent().get_node("UI/UI/UI/WinLabel").win()
+	get_node("Audio/WinAudio").play()
 
 func _on_IFrames_timeout() -> void:
 	inIframe = false

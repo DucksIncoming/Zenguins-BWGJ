@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/Levels/MovingPlatform.gd" type="Script" id=1]
+[ext_resource path="res://Assets/TileMap/Debug/debugmap.png" type="Texture" id=2]
+[ext_resource path="res://Assets/TileMap/Debug/Animated Sprites/gear_2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/TileMap/Debug/Animated Sprites/gear_1.png" type="Texture" id=4]
+
+[sub_resource type="Curve2D" id=99]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 798.044, 282.213, 0, 0, 0, 0, 798.044, 475.961, 0, 0, 0, 0, 452.611, 474.545, 0, 0, 0, 0, 451.903, 409.924, 0, 0, 0, 0, 187.751, 409.255, 0, 0, 0, 0, 187.198, 348.52, 0, 0, 0, 0, 451.903, 345.184, 0, 0, 0, 0, 453.783, 283.626, 0, 0, 0, 0, 560.34, 284.334, 0, 0, 0, 0, 559.754, 379.793, 0, 0, 0, 0, 692.072, 378.379, 0, 0, 0, 0, 691.487, 284.334, 0, 0, 0, 0, 798.57, 281.734 )
+}
+
+[sub_resource type="RectangleShape2D" id=100]
+extents = Vector2( 15.7379, 1.72884 )
+
+[sub_resource type="SpriteFrames" id=101]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="MovingPlatform" type="Path2D"]
+use_parent_material = true
+position = Vector2( -500.397, 0 )
+scale = Vector2( 1.20774, 1 )
+curve = SubResource( 99 )
+script = ExtResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+use_parent_material = true
+position = Vector2( 798.044, 282.213 )
+rotate = false
+lookahead = 0.001
+
+[node name="MovingPlatform" type="KinematicBody2D" parent="PathFollow2D"]
+use_parent_material = true
+position = Vector2( 0, -12.6953 )
+scale = Vector2( 2, 2 )
+
+[node name="Sprite" type="Sprite" parent="PathFollow2D/MovingPlatform"]
+use_parent_material = true
+z_index = 1
+texture = ExtResource( 2 )
+vframes = 12
+hframes = 3
+frame = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/MovingPlatform"]
+position = Vector2( 0, 6.34766 )
+shape = SubResource( 100 )
+
+[node name="Gear" type="AnimatedSprite" parent="PathFollow2D"]
+use_parent_material = true
+scale = Vector2( 1.65599, 2 )
+z_index = -1
+frames = SubResource( 101 )
+playing = true

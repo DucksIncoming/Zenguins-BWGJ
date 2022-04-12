@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Christmas Village - Aaron Kenny.wav-0218c0f2304607b073b9251c814012cc.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Christmas Village - Aaron Kenny.wav"
+dest_files=[ "res://.import/Christmas Village - Aaron Kenny.wav-0218c0f2304607b073b9251c814012cc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

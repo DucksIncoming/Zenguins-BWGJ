@@ -17,7 +17,7 @@ var delay = 0
 onready var animTree = $AnimationTree
 onready var animPlayer = $AnimationPlayer
 onready var animState = animTree.get("parameters/playback")
-onready var particles = $CPUParticles2D
+onready var particles = get_node("CPUParticles2D")
 var timeOfDay = "day"
 onready var LivingCollision = $LivingCollision
 onready var DeadCollision = $DeadCollision
@@ -25,9 +25,11 @@ onready var startingPosition = position
 var isInstance = false
 var dead = false
 var deathDate
+var maxSlope = 45
 var posMemory = Vector2.ZERO
 var posDelay = 0
 var jumpMemory = Vector2.ZERO
+const UP_DIRECTION = Vector2.UP
 
 func deleteZenguin() -> void:
 	if (isInstance):
@@ -63,6 +65,14 @@ func _process(delta: float):
 						var tileMap = collision.collider
 						if (tileMap.name == "JumpPad"):
 							_velocity.y = -1 * tileMap.padPower
+						elif (tileMap.name == "KillTiles"):
+							dead = true
+							animState.travel("Dead")
+							particles.emitting = false
+							LivingCollision.disabled = true
+							DeadCollision.disabled = false
+							name = "DeadZenguin"
+							deathDate = get_parent().day
 					elif (collision.collider is KinematicBody2D):
 						if (collision.collider.name == "MovingPlatform"):
 							_velocity.y += abs(get_floor_velocity().y)
@@ -70,6 +80,19 @@ func _process(delta: float):
 			_velocity.x =  (get_floor_velocity().x/8)
 			particles.emitting = false
 			animState.travel("Frozen")
+			
+			if (get_slide_count() != 0):
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if (collision.collider is TileMap):
+						if (collision.collider.name == "KillTiles"):
+							dead = true
+							animState.travel("Dead")
+							particles.emitting = false
+							LivingCollision.disabled = true
+							DeadCollision.disabled = false
+							name = "DeadZenguin"
+							deathDate = get_parent().day
 		
 		if (_velocity.x != 0):
 			if (timeOfDay == "night"):
@@ -112,6 +135,7 @@ func _process(delta: float):
 		
 		if (HeadRaycast.is_colliding()):
 			if (HeadRaycast.get_collider().name == "Player" and timeOfDay == "night"):
+				get_parent().get_node("Player/Audio/DieAudio").play()
 				dead = true
 				animState.travel("Dead")
 				particles.emitting = false
@@ -122,11 +146,12 @@ func _process(delta: float):
 				HeadRaycast.get_collider()._velocity.y = -0.5 * HeadRaycast.get_collider().jumpPower
 	else:
 		_velocity.x = 0
+		maxSlope = 85
 		if ((get_parent().day - deathDate) >= decayPeriod - 1):
 			queue_free()
 			
 	_velocity.y += Player.gravity * delta * int(not is_on_floor())
-	_velocity = move_and_slide(_velocity)
+	_velocity = move_and_slide(_velocity, UP_DIRECTION, true, 4, deg2rad(maxSlope), true)
 	if (posDelay > 1):
 		posMemory = position
 		posDelay = 0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/winjump.wav-4f17c39500f3d3d8cc0ee771e0cf9c78.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/winjump.wav"
+dest_files=[ "res://.import/winjump.wav-4f17c39500f3d3d8cc0ee771e0cf9c78.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

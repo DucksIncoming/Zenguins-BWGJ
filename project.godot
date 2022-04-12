@@ -16,17 +16,19 @@ _global_script_class_icons={
 [application]
 
 config/name="Black and White Game Jam"
-run/main_scene="res://src/Levels/Level 0.tscn"
+run/main_scene="res://src/Levels/MainMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Invert="res://src/Scripts/Invert.gd"
+Invert="*res://src/Scripts/Invert.gd"
+BackgroundMusic="*res://src/Scenes/BackgroundMusic.tscn"
 
 [display]
 
 window/per_pixel_transparency/allowed=true
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
 
 [input]
 
@@ -62,10 +64,16 @@ MoveDown={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
  ]
 }
+Pause={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
+quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 environment/default_clear_color=Color( 0.976471, 0.603922, 0.603922, 1 )

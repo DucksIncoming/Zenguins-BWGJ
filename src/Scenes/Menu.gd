@@ -13,3 +13,7 @@ func _on_Menu_mouse_entered() -> void:
 
 func _on_Menu_mouse_exited() -> void:
 	isHover = false
+
+
+func _on_Menu_pressed() -> void:
+	pass # Replace with function body.

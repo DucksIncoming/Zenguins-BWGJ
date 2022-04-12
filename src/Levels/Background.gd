@@ -1,6 +1,9 @@
 extends Sprite
 onready var Invert = get_parent().get_parent()
 
+func _ready():
+	show()
+
 func _process(delta: float) -> void:
 	#var zoomFactor = (get_parent().get_parent().get_node("Player").get_node("Camera2D").zoom.x) / 0.5
 	var zoomFactor = 1

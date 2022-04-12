@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/Levels/ConveyorRight.gd" type="Script" id=1]
+[ext_resource path="res://Assets/TileMap/Debug/Animated Sprites/conveyor-left_1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/TileMap/Debug/Animated Sprites/conveyor-left_2.png" type="Texture" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 15.857, 3.46695 )
+
+[node name="Conveyor" type="StaticBody2D"]
+position = Vector2( -300, 735 )
+script = ExtResource( 1 )
+convSpeed = -500
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -11.8798 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -6.10352e-05 )
+shape = SubResource( 2 )
