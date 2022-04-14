@@ -11,3 +11,5 @@ WASD -> Movement
 W/S -> Look up/down, climb rope
 Space -> Jump
 Esc -> Pause/Unpause
+
+Play on itch.io -> ducksincoming.itch.io/zenguins
