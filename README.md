@@ -12,4 +12,4 @@ W/S -> Look up/down, climb rope
 Space -> Jump
 Esc -> Pause/Unpause
 
-Play on itch.io -> https://ducksincoming.itch.io/zenguins
+Play on itch.io -> https://itch.io/jam/black-and-white-jam-8/rate/1482982
