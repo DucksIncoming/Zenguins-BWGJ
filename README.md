@@ -6,7 +6,7 @@ Jam Theme: Loop
 General Game Description:
 You are a little penguin dude who has to get to the igloo at the end of the level. Every time you die or the time changes to night, you will turn into a Zenglin and take control of a new penguin. You can use the Zenguins that you've spawned to get through the level.
 
-Controls:
+# Controls:
 WASD -> Movement
 
 W/S -> Look up/down, climb rope
@@ -15,6 +15,5 @@ Space -> Jump
 
 Esc -> Pause/Unpause
 
-
-
-Play on itch.io -> https://itch.io/jam/black-and-white-jam-8/rate/1482982
+# Play on itch.io
+https://itch.io/jam/black-and-white-jam-8/rate/1482982
